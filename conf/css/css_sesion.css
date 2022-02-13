@@ -1,0 +1,38 @@
+a {
+	color:#000;
+	cursor:pointer;
+}
+/* Dispositivos: m&Atilde;&sup3;viles y tablets */
+@media (max-width: 650px) { /* 479px */
+	.formulario-login {
+		width: 280px; height: 400px; background: #fefefe; color: #000; top: 45%; left: 50%; position: absolute; transform: translate(-50%, -50%); box-sizing: border-box; padding: 70px 30px;
+	}
+
+	.formulario-login .logo {
+		width: 140px; height: 140px; position: absolute; top: -40px; left: calc(50% - 65px); background:#fff; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	}
+} 
+ 
+/* Dispositivos: Laptops o Desktops */
+@media (min-width: 651px) { /* 480px */ 
+	.formulario-login {
+		width: 320px; height: 400px; background: #fefefe; color: #000; top: 50%; left: 50%; position: absolute; transform: translate(-50%, -50%); box-sizing: border-box; padding: 70px 30px;
+	}
+
+	.formulario-login .logo {
+		/*width: 150px; height: 190px; position: absolute; top: -50px; left: calc(50% - 75px); background:#fff; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+		width: 180px; height:180px; position: absolute; top: -80px; left: calc(50% - 85px); background:#fff; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+	}
+}  
+
+.formulario-login {
+	-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; 
+}
+
+body {
+	margin: 0; padding: 0; background-size: cover; font-family: sans-serif; height: 100vh;
+}
+
+#explorador_error {
+	font-size:25px; width: 500px; height: 400px; color: #000; top: 10%; left: 30%; position: absolute; transform: translate(-50%, -50%); box-sizing: border-box; padding: 70px 30px;	
+}
