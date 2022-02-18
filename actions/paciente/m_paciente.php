@@ -1,6 +1,6 @@
 <?php
 /*
- * Desarrollador: Félix Rodrigo García Magaña (ES1521201162).
+ * Desarrollador: Rodrigo García
  * Empresa: -
  * Nombre: m_paciente.php
  * Modificaciones
