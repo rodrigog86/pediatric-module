@@ -11,4 +11,4 @@ You need to put your logo inside the path assets/logo.png with height and width 
 All DDL scripts are in the path conf/sql/DDL.sql to execute them in MySQL Workbench, besides inside of that path you will see another file named sp_administrar_paciente.sql, this contain the store procedure to manage patients.
 
 ---- Debugger 
-If you need a debugger, you can use debugger() funcition inside of php files to write on SystemErr log.
+If you need a debugger, you can use debugger() function inside of php files to write on SystemErr log.
