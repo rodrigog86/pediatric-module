@@ -22,6 +22,38 @@ date_default_timezone_set('America/Mexico_City');
 	</head>
 <body onpaste="return false;" oncopy="return false;">
 	
+<!-- Modal para generar el primer usuario. -->
+	<div class="modal fade" id="modal_add_user" tabindex="-1" role="dialog"
+        aria-labelledby="modal_add_user_title" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+				<div class="modal-header bg-dark text-white">
+					Asistente para generar usuario
+				</div>
+                <div class="modal-body">
+					<div class="container">
+						<div class="form-group">
+							<input type="text" class="form-control" id="add_name" value="Dra. Beatriz Cadena Montero" maxlength="90" placeholder="Nombre de usuario" />
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" id="add_user" value="drabett2" maxlength="12" placeholder="Usuario" />
+						</div>
+						<div class="form-group">
+							<input type="password" class="form-control" id="pwd_user" value="" maxlength="12" placeholder="Contraseña" />
+						</div>
+						<div class="form-group">
+							<input type="password" class="form-control" id="confirm_pwd" value="" maxlength="12" placeholder="Confirmar contraseña" />
+						</div>
+
+						<button id="btn_create_user" class="mt-3 btn btn-sm btn-primary btn-block">Crear usuario</button>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+
+
+
 	<div class="d-flex justify-content-center">
 		<div class="pt-2 m-5">
 			<div class="row">
@@ -39,24 +71,7 @@ date_default_timezone_set('America/Mexico_City');
 							<div class="form-group">
 								<label for="usuario" class="control-label">Usuario</label>
 								<select class="form-control" id="usuario">
-								<?php
-									$SQL = new SQL();
-									$resultado=$SQL->consultaBD("SELECT cve_usuario FROM `".$SQL->obtenerDB()."`.`usuario`", array());
-									$resultado=json_decode($resultado);
-									if($resultado->jsonResponse->server_response->error == "00") {
-										if(count($resultado->jsonResponse->data)>0) {
-											foreach($resultado->jsonResponse->data as $elemento) {
-												echo "<option value='".$elemento->cve_usuario."'>".$elemento->cve_usuario."</option>";
-											}
-										}
-										else {
-											echo "<option value=''>La consulta no generó datos</option>";
-										}
-									}
-									else {
-										echo "<option value=''>".$resultado->jsonResponse->server_response->message."</option>";
-									}
-								?>
+
 								</select>
 							</div>
 
