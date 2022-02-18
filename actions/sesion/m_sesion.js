@@ -11,10 +11,12 @@
 
 // -- Método que cargará información y realizará la captura de la acción de cada objeto dentro del módulo. 
 $(document).ready(() => {
+	
 	$('#usuario').focus();
+	
 	// -- Método que captura la acción de clic sobre el botón para entrar al sistema.
 	$("#btn_entrar").click(() => {
-		validar_datos();
+		isValid();
 	});	
 
 	$("#usuario").keypress((e) => {
@@ -28,9 +30,14 @@ $(document).ready(() => {
 			$("#btn_entrar").click();		
 		}
 	});
+
+	$("#btn_create_user").click(() => {
+		addUser();
+	});
+	getUsers();
 });
 
-const validar_datos = () => {
+const isValid = () => {
 	const usuario = $('#usuario').val();
 	const contrasena = $('#contrasena').val();
 	if(contrasena === '') {
@@ -39,8 +46,7 @@ const validar_datos = () => {
 		return false;
 	}
 
-	const clave = CryptoJS.SHA512(contrasena);
-	const data = JSON.stringify({"accion" : "validar_datos", "usuario": usuario, "contrasena" : String(clave)});
+	const data = JSON.stringify({"accion" : "isValid", "usuario": usuario, "contrasena" : String(CryptoJS.SHA512(contrasena))});
 	callServerJQ('POST', apiURL_sesion, data, (response) => {
 		if(response.jsonResponse.server_response.error !== '00') {
 			print_alert(response.jsonResponse.server_response.message);
@@ -48,4 +54,64 @@ const validar_datos = () => {
 		}
 		window.location='paciente.php';
 	});
+}
+
+const getUsers = () => {
+	const data = JSON.stringify({"accion" : "getUsers"});
+	callServerJQ('POST', apiURL_sesion, data, (response) => {
+		$("#usuario").empty();
+		if(response.jsonResponse.server_response.error !== '00') {
+			print_alert(response.jsonResponse.server_response.message);
+			return false;
+		}
+		else if(response.jsonResponse.data.length < 1) {
+			$("#modal_add_user").modal({backdrop: 'static', keyboard: false, show: true}).on('shown.bs.modal', () => {
+				$('#add_name').focus();
+			});
+			$("#usuario").append(`<option>No existen usuarios registrados</option>`);
+			return false;
+		}
+		response.jsonResponse.data.map(elemento => {
+			$("#usuario").append(`<option value='${elemento.cve_usuario}'>${elemento.nombre}</option>`);
+		});
+	});	
+}
+
+const addUser = () => {
+	const cve_usuario = $("#add_user").val();
+	const contrasena = $("#pwd_user").val();
+	const confirma_contrasena = $("#confirm_pwd").val();
+	const nombre = $("#add_name").val();
+
+	let msgerr='';
+	let numerr=0;
+	
+	if(!verifyValue(cve_usuario, 5, 12)) {
+		numerr++;
+		msgerr+='El usuario tecleado no es válido.<br>';
+	}
+	
+	if(!verifyValue(contrasena, 8, 16) || contrasena !== confirma_contrasena) {
+		numerr++;
+		msgerr+='La contraseña tecleada no es válida o éstas no son identicas.<br>';
+	}
+
+	if(!verifyValue(nombre, 5, 90)) {
+		numerr++;
+		msgerr+='Se debe teclear un nombre.<br>';
+	}
+
+	if(numerr>0) {
+		print_alert(msgerr);
+		return false;
+	}
+	
+	const data = JSON.stringify({"accion": "addUser", "cve_usuario":cve_usuario, "contrasena":String(CryptoJS.SHA512(contrasena)), "nombre":nombre});
+	callServerJQ('POST', apiURL_sesion, data, (response) => {
+		if(response.jsonResponse.server_response.error !== '00') {
+			print_alert(response.jsonResponse.server_response.message);
+			return false;
+		}
+		window.location.reload();
+	});		
 }

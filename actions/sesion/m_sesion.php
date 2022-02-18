@@ -27,10 +27,16 @@ include_once "../../conf/connection.php";
 $request = json_decode($_POST["json_request"], false);
 
 switch($request->accion) {
-	case "validar_datos":
-		validar_datos($request);
+	case "isValid":
+		isValid($request);
 		break;
-	case "cerrar_sesion":
+	case "addUser":
+		addUser($request);
+		break;
+	case "getUsers":
+		getUsers();
+		break;
+	case "closeSession":
 		@session_destroy();
 		echo json_encode(array("jsonResponse" => array("server_response" => array("error" => "00", "message" => "OK"))));
 		break;
@@ -39,8 +45,26 @@ switch($request->accion) {
 		break;
 }
 
+function addUser($request) {
+	$SQL = new SQL();
+	$parametros = array(":cve_usuario" => str_replace(' ', '', trim($request->cve_usuario)),
+						":contrasena" => password_hash($request->contrasena, PASSWORD_BCRYPT, array("cost" => 5)),
+						":nombre" => trim($request->nombre));
+	$resultado = $SQL->modificaBD_SP("CALL `".$SQL->obtenerDB()."`.`sp_administrar_usuario`(:cve_usuario, :contrasena, :nombre) ", $parametros);
+	$resultado=json_decode($resultado);
+	echo json_encode($resultado);
+}
+
+function getUsers() {
+	$SQL = new SQL();
+	$resultado=$SQL->consultaBD("SELECT cve_usuario, nombre FROM `".$SQL->obtenerDB()."`.`usuario`", array());
+	$resultado=json_decode($resultado);
+	debugger(json_encode($resultado));
+	echo json_encode($resultado);
+}
+
 // -- Función que se encarga de validar el usuario y contraseña dentro de la base de datos.
-function validar_datos($request) {
+function isValid($request) {
 	$SQL = new SQL();
 	$parametros = array(":cve_usuario" => str_replace(' ', '', trim($request->usuario)));
 	$resultado = $SQL->consultaBD("SELECT contrasena, nombre FROM `".$SQL->obtenerDB()."`.`usuario` WHERE cve_usuario=:cve_usuario", $parametros);
